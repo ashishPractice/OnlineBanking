@@ -23,6 +23,10 @@ public class BankController {
         return accountModel;
     }
 
+    public static void depositAmount(){
+
+    }
+
     //main method
     public static void main(String[] args) {
         BankService bankService = new BankServiceImpl();
