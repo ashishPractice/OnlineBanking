@@ -16,6 +16,7 @@ public class BankServiceImpl implements BankService{
     }
 
     @Override
+
     public int depositAmount(TransactionModel transactionModel) {
 
         return bankDao.depositAmount(transactionModel);
@@ -24,5 +25,11 @@ public class BankServiceImpl implements BankService{
     @Override
     public int withdrawAmount(TransactionModel transactionModel) {
         return bankDao.withdrawAmount(transactionModel);
+    }
+
+    @Override
+    public AccountModel searchUser(String account_num) {
+        return bankDao.searchUser(account_num);
+
     }
 }

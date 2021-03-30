@@ -4,12 +4,14 @@ import com.vastika.teamA.ob.database.DBConnection;
 import com.vastika.teamA.ob.model.AccountModel;
 import com.vastika.teamA.ob.model.TransactionModel;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public class BankDaoImpl implements BankDao {
     public static final String UPDATE_SQL = "update transaction_tbl set balance=?, deposit_amount=? where id= ?";
+
+    ResultSet rs = null;
 
     @Override
     public String createAccount(AccountModel accountModel) {
@@ -34,6 +36,7 @@ public class BankDaoImpl implements BankDao {
     }
 
     @Override
+
     public int depositAmount(TransactionModel transactionModel) {
         int deposited = 0;
         try (
@@ -65,5 +68,29 @@ public class BankDaoImpl implements BankDao {
             throwables.printStackTrace();
         }
         return withdrawn;
+    }
+
+    @Override
+    public AccountModel searchUser(String account_num) {
+
+        AccountModel accountModel =  null;
+
+        String query = "SELECT * FROM account_tbl WHERE account_no=?";
+        try (
+                PreparedStatement pstmt = DBConnection.getConnection().prepareStatement(query);
+
+        ) {
+            pstmt.setString(1,account_num);
+            rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                accountModel = new AccountModel(rs.getInt(1), rs.getString(2),rs.getString(3),rs.getString(4), rs.getString(5));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(accountModel);
+        return accountModel;
     }
 }

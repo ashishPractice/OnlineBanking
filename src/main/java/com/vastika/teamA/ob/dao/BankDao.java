@@ -6,6 +6,10 @@ import com.vastika.teamA.ob.model.TransactionModel;
 public interface BankDao {
 
     public String createAccount(AccountModel accountModel);
+
     public int depositAmount(TransactionModel transactionModel);
     public int withdrawAmount(TransactionModel transactionModel);
+
+    public AccountModel searchUser(String account_num);
+
 }

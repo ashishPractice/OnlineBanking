@@ -11,7 +11,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class BankController {
+    String output = "";
 
+    // Method to get account info
     public static AccountModel getAccount() {
 
         String account_no = JOptionPane.showInputDialog("Enter Account Number:");
@@ -23,6 +25,7 @@ public class BankController {
         AccountModel accountModel = new AccountModel(0, account_no, account_name, email, mobile);
         return accountModel;
     }
+
 
     public static TransactionModel depositFund(){
         TransactionModel transactionModel = new TransactionModel();
@@ -50,10 +53,22 @@ public class BankController {
         return transactionModel;
     }
 
+
+    public  void displayAccountInfo(AccountModel accountModel){
+        output = output + "Account Number:\t"+accountModel.getAccount_no()+"\nAccountHolder Name:\t" + accountModel.getAccount_name()+
+                "\nEmail Address:\t" +accountModel.getEmail()+"\nMobile Number:\t" +accountModel.getMobile()+"\n";
+
+        JOptionPane.showMessageDialog(null, output, "AccountHolder Info",JOptionPane.PLAIN_MESSAGE);
+
+    }
+
+
     //main method
     public static void main(String[] args) {
+        BankController bankController = new BankController();
         BankService bankService = new BankServiceImpl();
         String result = "";
+
 //        try {
 //            Connection con = DBConnection.getConnection();
 //            if(con!=null){
@@ -78,7 +93,19 @@ public class BankController {
 
                 case 2:
                     System.out.println("Account search");
-                    break;
+
+                    String account_no = JOptionPane.showInputDialog("Enter Account Number:");
+
+                    AccountModel accountModel1 =bankService.searchUser(account_no);
+
+                    if(accountModel1 !=null){
+                        bankController.displayAccountInfo(accountModel1);
+
+                    }else{
+                        JOptionPane.showMessageDialog(null,"Search not found");
+                    }
+
+
                 case 3:
                     System.out.println("Deposite fund");
 
