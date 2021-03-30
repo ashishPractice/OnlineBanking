@@ -16,6 +16,10 @@ public class AccountModel {
         this.mobile = mobile;
     }
 
+    public AccountModel() {
+
+    }
+
     public int getId() {
         return id;
     }
