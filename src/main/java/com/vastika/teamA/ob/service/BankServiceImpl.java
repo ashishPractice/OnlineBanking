@@ -17,14 +17,13 @@ public class BankServiceImpl implements BankService{
 
     @Override
 
-    public int depositAmount(TransactionModel transactionModel) {
-
-        return bankDao.depositAmount(transactionModel);
+    public String depositAmount(String account_id, Double amount) {
+        return bankDao.depositAmount(account_id, amount);
     }
 
     @Override
-    public int withdrawAmount(TransactionModel transactionModel) {
-        return bankDao.withdrawAmount(transactionModel);
+    public String withdrawAmount(String account_id, Double amount) {
+        return bankDao.withdrawAmount(account_id, amount);
     }
 
     @Override
@@ -32,4 +31,16 @@ public class BankServiceImpl implements BankService{
         return bankDao.searchUser(account_num);
 
     }
+
+    @Override
+    public String initialDeposite(String accountNum, Double amount) {
+        return bankDao.initialDeposite(accountNum,amount);
+    }
+
+    @Override
+    public Double checkBalance(String account_id) {
+        return bankDao.checkBalance(account_id);
+    }
+
+
 }

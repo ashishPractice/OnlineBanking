@@ -1,19 +1,25 @@
 package com.vastika.teamA.ob.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class TransactionModel extends AccountModel{
-    double balance;
-    double withdrawnAmount;
-    double depositAmount;
-    Date depositedDate;
-    Date withdrawnDate;
+    private double balance;
+    private double withdrawnAmount;
+    private double depositAmount;
+    private LocalDate depositedDate;
+    private LocalDate withdrawnDate;
 
-    public TransactionModel(int id, String account_no, String account_name, String email, String mobile) {
-        super(id, account_no, account_name, email, mobile);
-    }
     public TransactionModel(){
-        super();
+
+    }
+
+    public TransactionModel(int id, String account_no, String account_name, String email, String mobile, double balance, double withdrawnAmount, double depositAmount, LocalDate depositedDate, LocalDate withdrawnDate) {
+        super(id, account_no, account_name, email, mobile);
+        this.balance = balance;
+        this.withdrawnAmount = withdrawnAmount;
+        this.depositAmount = depositAmount;
+        this.depositedDate = depositedDate;
+        this.withdrawnDate = withdrawnDate;
     }
 
     public double getBalance() {
@@ -40,19 +46,30 @@ public class TransactionModel extends AccountModel{
         this.depositAmount = depositAmount;
     }
 
-    public Date getDepositedDate() {
+    public LocalDate getDepositedDate() {
         return depositedDate;
     }
 
-    public void setDepositedDate(Date depositedDate) {
+    public void setDepositedDate(LocalDate depositedDate) {
         this.depositedDate = depositedDate;
     }
 
-    public Date getWithdrawnDate() {
+    public LocalDate getWithdrawnDate() {
         return withdrawnDate;
     }
 
-    public void setWithdrawnDate(Date withdrawnDate) {
+    public void setWithdrawnDate(LocalDate withdrawnDate) {
         this.withdrawnDate = withdrawnDate;
+    }
+
+    @Override
+    public String toString() {
+        return "TransactionModel{" +
+                "balance=" + balance +
+                ", withdrawnAmount=" + withdrawnAmount +
+                ", depositAmount=" + depositAmount +
+                ", depositedDate=" + depositedDate +
+                ", withdrawnDate=" + withdrawnDate +
+                '}';
     }
 }
