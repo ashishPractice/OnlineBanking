@@ -11,7 +11,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class BankController {
+    String output = "";
 
+    // Method to get account info
     public static AccountModel getAccount() {
 
         String account_no = JOptionPane.showInputDialog("Enter Account Number:");
@@ -19,41 +21,38 @@ public class BankController {
         String email = JOptionPane.showInputDialog("Enter email:");
         String mobile = JOptionPane.showInputDialog("Enter Mobile Number:");
 
-
         AccountModel accountModel = new AccountModel(0, account_no, account_name, email, mobile);
         return accountModel;
     }
 
-    public static TransactionModel depositFund(){
-        TransactionModel transactionModel = new TransactionModel();
-        double balance = 0;
-        int id = Integer.parseInt(JOptionPane.showInputDialog("Enter id: "));
-        transactionModel.setId(id);
-        double depositAmount = Double.parseDouble(JOptionPane.showInputDialog("Enter Account Number:"));
-        transactionModel.setDepositAmount(depositAmount);
-         balance = balance + depositAmount;
-         transactionModel.setBalance(balance);
-
-         return transactionModel;
+    public static String initialDeposite(String accountNum) {
+        String message = "";
+        Double amount = 0.0;
+        String choice = JOptionPane.showInputDialog("You wana make initial Deposite<Y/N>");
+        if (choice.equalsIgnoreCase("Y")) {
+            amount = Double.parseDouble(JOptionPane.showInputDialog("Enter the deposite amount:"));
+        }
+        BankService bankService = new BankServiceImpl();
+        message = bankService.initialDeposite(accountNum, amount);
+        return message;
     }
 
-    public static TransactionModel withdrawFund(){
-        TransactionModel transactionModel = new TransactionModel();
-        double balance = 0;
-        int id = Integer.parseInt(JOptionPane.showInputDialog("Enter id: "));
-        transactionModel.setId(id);
-        double withdrawAmount = Double.parseDouble(JOptionPane.showInputDialog("Enter Account Number:"));
-        transactionModel.setDepositAmount(withdrawAmount);
-        balance = balance + withdrawAmount;
-        transactionModel.setBalance(balance);
 
-        return transactionModel;
+    public void displayAccountInfo(AccountModel accountModel) {
+        output = output + "Account Number:\t" + accountModel.getAccount_no() + "\nAccountHolder Name:\t" + accountModel.getAccount_name() +
+                "\nEmail Address:\t" + accountModel.getEmail() + "\nMobile Number:\t" + accountModel.getMobile() + "\n";
+
+        JOptionPane.showMessageDialog(null, output, "AccountHolder Info", JOptionPane.PLAIN_MESSAGE);
+
     }
+
 
     //main method
     public static void main(String[] args) {
+        BankController bankController = new BankController();
         BankService bankService = new BankServiceImpl();
         String result = "";
+
 //        try {
 //            Connection con = DBConnection.getConnection();
 //            if(con!=null){
@@ -65,7 +64,7 @@ public class BankController {
         while (true) {
             int choice = Integer.parseInt(
                     JOptionPane.showInputDialog("Enter your choice:: \n 1. Create account \n 2. Search Account holder"
-                            + "\n 3. Deposite Fund \n 4.Withdrawl Amount \n 5. Check Balance \n 6. Exit"));
+                            + "\n 3. Deposite Fund \n 4. Withdrawl Amount \n 5. Check Balance \n 6. Exit"));
 
             switch (choice) {
                 case 1:
@@ -73,37 +72,95 @@ public class BankController {
 
                     AccountModel accountModel = getAccount();
                     result = bankService.createAccount(accountModel);
+
+                    if (result.equalsIgnoreCase("Account created")) {
+                        String message = initialDeposite(accountModel.getAccount_no());
+
+                        result = result + " and " + message;
+                    }
                     JOptionPane.showMessageDialog(null, result);
                     break;
 
                 case 2:
                     System.out.println("Account search");
+
+                    String account_no = JOptionPane.showInputDialog("Enter Account Number:");
+
+                    AccountModel accountModel1 = bankService.searchUser(account_no);
+
+                    if (accountModel1 != null) {
+                        bankController.displayAccountInfo(accountModel1);
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Search not found");
+                    }
                     break;
+
+
                 case 3:
                     System.out.println("Deposite fund");
 
-                    TransactionModel transactionModel = depositFund();
-                   int deposited = bankService.depositAmount(transactionModel);
-                    if(deposited>=1){
-                        JOptionPane.showMessageDialog(null, "the amount is deposited in account");
-                    }else{
-                        JOptionPane.showMessageDialog(null, "error in db");
+                    String account_no1 = JOptionPane.showInputDialog("Enter Account Number:");
+
+                    AccountModel accountModel2 = bankService.searchUser(account_no1);
+
+                    Double amount = 0.0;
+
+                    if (accountModel2 != null) {
+                        while(amount <= 0.0) {
+                            amount = Double.parseDouble(JOptionPane.showInputDialog("Enter your deposite amount"));
+                        }
+
+                        result = bankService.depositAmount(account_no1,amount);
+
+                        JOptionPane.showMessageDialog(null, result);
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Please enter the correct account number!!!!");
                     }
+
+
                     break;
+
                 case 4:
                     System.out.println("Withdraw Amount");
+                    System.out.println("Deposite fund");
 
-                    transactionModel = withdrawFund();
-                    int withdrawn = bankService.depositAmount(transactionModel);
-                    if(withdrawn>=1){
-                        JOptionPane.showMessageDialog(null, "the amount is withdrawn");
-                    }else{
-                        JOptionPane.showMessageDialog(null, "error in db");
+                    String account_no2 = JOptionPane.showInputDialog("Enter Account Number:");
+
+                    AccountModel accountModel3 = bankService.searchUser(account_no2);
+
+                    Double amount1 = 0.0;
+
+                    if (accountModel3 != null) {
+                        while(amount1 <= 0.0) {
+                            amount1 = Double.parseDouble(JOptionPane.showInputDialog("Enter your withdrawl amount"));
+                        }
+
+                        result = bankService.withdrawAmount(account_no2,amount1);
+
+                        JOptionPane.showMessageDialog(null, result);
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Please enter the correct account number!!!!");
                     }
                     break;
+
                 case 5:
                     System.out.println("Check Balance");
+                    String account_num = JOptionPane.showInputDialog("Enter Account Number:");
+
+                    AccountModel accountModel5 = bankService.searchUser(account_num);
+
+                    if (accountModel5 != null) {
+                        Double balance = bankService.checkBalance(account_num);
+                        JOptionPane.showMessageDialog(null, "You current balance is: "+ balance);
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Invalid Account number!!!");
+                    }
                     break;
+
                 case 6:
                     System.exit(0);
                 default:

@@ -6,7 +6,15 @@ import com.vastika.teamA.ob.model.TransactionModel;
 public interface BankService {
 
     public String createAccount(AccountModel accountModel);
-    public int depositAmount(TransactionModel transactionModel);
-    public int withdrawAmount(TransactionModel transactionModel);
+
+    public String depositAmount(String account_id, Double amount);
+
+    public String withdrawAmount(String account_id, Double amount);
+
+    public AccountModel searchUser(String account_num);
+
+    public String initialDeposite(String accountNum, Double amount);
+
+    public Double checkBalance(String account_id);
 
 }
