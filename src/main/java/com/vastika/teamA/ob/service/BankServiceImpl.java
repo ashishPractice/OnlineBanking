@@ -5,6 +5,8 @@ import com.vastika.teamA.ob.dao.BankDaoImpl;
 import com.vastika.teamA.ob.model.AccountModel;
 import com.vastika.teamA.ob.model.TransactionModel;
 
+import java.util.List;
+
 public class BankServiceImpl implements BankService{
 
     BankDao bankDao = new BankDaoImpl();
@@ -40,6 +42,11 @@ public class BankServiceImpl implements BankService{
     @Override
     public Double checkBalance(String account_id) {
         return bankDao.checkBalance(account_id);
+    }
+
+    @Override
+    public List<AccountModel> getAllAccountInfo() {
+        return bankDao.getAllAccountInfo();
     }
 
 
