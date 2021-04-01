@@ -9,6 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BankDaoImpl implements BankDao {
     public static final String UPDATE_SQL = "update transaction_tbl set balance=?, deposite_amount=? , deposite_date=? where account_id=?";
@@ -152,5 +154,30 @@ public class BankDaoImpl implements BankDao {
             e.printStackTrace();
         }
         return balance;
+    }
+
+    @Override
+    public List<AccountModel> getAllAccountInfo() {
+
+        List<AccountModel> accoutHolderList = new ArrayList<AccountModel>();
+
+        try {
+            String sql = "SELECT * FROM account_tbl";
+
+            PreparedStatement pstmt = DBConnection.getConnection().prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                AccountModel accoutHolder = new AccountModel(rs.getInt(1),rs.getString(2),rs.getString(3),
+                        rs.getString(4),rs.getString(5));
+                accoutHolderList.add(accoutHolder);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return accoutHolderList;
+
     }
 }

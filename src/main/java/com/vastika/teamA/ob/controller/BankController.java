@@ -9,6 +9,8 @@ import com.vastika.teamA.ob.service.BankServiceImpl;
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BankController {
     String output = "";
@@ -64,7 +66,7 @@ public class BankController {
         while (true) {
             int choice = Integer.parseInt(
                     JOptionPane.showInputDialog("Enter your choice:: \n 1. Create account \n 2. Search Account holder"
-                            + "\n 3. Deposite Fund \n 4. Withdrawl Amount \n 5. Check Balance \n 6. Exit"));
+                            + "\n 3. Deposite Fund \n 4. Withdrawl Amount \n 5. Check Balance \n 6. Show all AccounHolder \n 7. Exit"));
 
             switch (choice) {
                 case 1:
@@ -162,7 +164,37 @@ public class BankController {
                     break;
 
                 case 6:
+                    List<AccountModel> model = new ArrayList<AccountModel>();
+
+                    model = bankService.getAllAccountInfo();
+
+                    String[] cols= {"Account Number", "AccountHolder Name", "Email Address", "Mobile Number", "Current Balance"};
+
+                    String[][] datas = new String[model.size()][5];
+
+                    int i =0;
+                    for (AccountModel m: model){
+                        System.out.println(m.getAccount_name());
+                        Double balance = bankService.checkBalance(m.getAccount_no());
+                        datas[i][0] = m.getAccount_no();
+                        datas[i][1] = m.getAccount_name();
+                        datas[i][2] = m.getEmail();
+                        datas[i][3] = m.getMobile();
+                        datas[i][4] = String.valueOf(balance);
+                        i++;
+                    }
+
+                   JTable table = new JTable(datas,cols);
+                    JScrollPane sp = new JScrollPane(table);
+                    sp.setSize(100,50);
+                    JOptionPane.showMessageDialog(null,sp,"AccountHolder Info",JOptionPane.PLAIN_MESSAGE);
+
+                    break;
+
+                case 7:
                     System.exit(0);
+                    break;
+
                 default:
                     System.out.println("Invalid choice");
             }
