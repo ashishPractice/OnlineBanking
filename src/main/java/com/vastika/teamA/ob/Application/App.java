@@ -19,14 +19,6 @@ public class App {
         BankService bankService = new BankServiceImpl();
         String result = "";
 
-//        try {
-//            Connection con = DBConnection.getConnection();
-//            if(con!=null){
-//                System.out.println("Connection successful!!!");
-//            }
-//        } catch (ClassNotFoundException | SQLException e) {
-//            e.printStackTrace();
-//        }
         while (true) {
             int choice = Integer.parseInt(
                     JOptionPane.showInputDialog("Enter your choice:: \n 1. Create account \n 2. Search Account holder"
