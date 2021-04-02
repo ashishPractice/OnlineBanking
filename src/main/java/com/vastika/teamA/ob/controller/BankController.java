@@ -20,27 +20,16 @@ public class BankController {
 
     // Method to get account info
     public static AccountModel getAccount() {
+        String account_no = null;
 
-        String account_no = JOptionPane.showInputDialog("Enter Account Number:");
+       account_no = JOptionPane.showInputDialog("Enter Account Number:");
+
         Pattern numbersOnly = Pattern.compile("^[0-9]*$");
         Pattern alphabetOnly = Pattern.compile("^[a-zA-Z]+$");
 
-
-        try{
-            Matcher m = numbersOnly.matcher(account_no);
-            while (!m.find()){
-                JOptionPane.showMessageDialog(null, "Please enter only numbers");
-                 account_no = JOptionPane.showInputDialog("Enter Account Number:");
-                 m = numbersOnly.matcher(account_no);
-            }
-        } catch (NullPointerException E){
-
-            //PLEASE REVIEW
-            //Don't think this is a good approach
-            //Need Logic to return to initial screen
-                return null;
+        if(account_no == null){
+            return null;
         }
-
 
         String account_name = JOptionPane.showInputDialog("Enter AccountHolder Name:");
 
@@ -53,9 +42,6 @@ public class BankController {
              }
 
         } catch (NullPointerException E){
-            //PLEASE REVIEW
-            //Don't think this is a good approach
-            //Need Logic to return to initial screen
             return null;
         }
 
@@ -68,9 +54,6 @@ public class BankController {
                 email = JOptionPane.showInputDialog("Enter email:");
             };
         } catch (NullPointerException E){
-            //PLEASE REVIEW
-            //Don't think this is a good approach
-            //Need Logic to return to initial screen
             return null;
         }
 
@@ -85,9 +68,6 @@ public class BankController {
             }
         } catch (NullPointerException E){
 
-            //PLEASE REVIEW
-            //Don't think this is a good approach
-            //Need Logic to return to initial screen
             return null;
         }
 
@@ -111,7 +91,8 @@ public class BankController {
 
 
     public void displayAccountInfo(AccountModel accountModel) {
-        output = output + "Account Number:\t" + accountModel.getAccount_no() + "\nAccountHolder Name:\t" + accountModel.getAccount_name() +
+        output = "";
+        output =  "Account Number:\t" + accountModel.getAccount_no() + "\nAccountHolder Name:\t" + accountModel.getAccount_name() +
                 "\nEmail Address:\t" + accountModel.getEmail() + "\nMobile Number:\t" + accountModel.getMobile() + "\n";
 
         JOptionPane.showMessageDialog(null, output, "AccountHolder Info", JOptionPane.PLAIN_MESSAGE);

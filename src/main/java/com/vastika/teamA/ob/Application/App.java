@@ -17,7 +17,7 @@ public class App {
     public static void main(String[] args) {
         BankController bankController = new BankController();
         BankService bankService = new BankServiceImpl();
-        String result = "";
+        String result;
 
         while (true) {
             int choice = Integer.parseInt(
@@ -26,20 +26,26 @@ public class App {
 
             switch (choice) {
                 case 1:
+                    result = "";
                     System.out.println("Create account");
 
                     AccountModel accountModel = getAccount();
-                    result = bankService.createAccount(accountModel);
+                    if(accountModel!=null) {
+                        result = bankService.createAccount(accountModel);
 
-                    if (result.equalsIgnoreCase("Account created")) {
-                        String message = initialDeposite(accountModel.getAccount_no());
+                        if (result.equalsIgnoreCase("Account created")) {
+                            String message = initialDeposite(accountModel.getAccount_no());
 
-                        result = result + " and " + message;
+                            result = result + " and " + message;
+                        }
+                        JOptionPane.showMessageDialog(null, result);
+                    }else{
+                        JOptionPane.showMessageDialog(null,"Account Creation Failed");
                     }
-                    JOptionPane.showMessageDialog(null, result);
                     break;
 
                 case 2:
+                    result = "";
                     System.out.println("Account search");
 
                     String account_no = JOptionPane.showInputDialog("Enter Account Number:");
@@ -56,6 +62,7 @@ public class App {
 
 
                 case 3:
+                    result = "";
                     System.out.println("Deposite fund");
 
                     String account_no1 = JOptionPane.showInputDialog("Enter Account Number:");
@@ -81,8 +88,8 @@ public class App {
                     break;
 
                 case 4:
+                    result = "";
                     System.out.println("Withdraw Amount");
-                    System.out.println("Deposite fund");
 
                     String account_no2 = JOptionPane.showInputDialog("Enter Account Number:");
 
@@ -105,6 +112,7 @@ public class App {
                     break;
 
                 case 5:
+                    result = "";
                     System.out.println("Check Balance");
                     String account_num = JOptionPane.showInputDialog("Enter Account Number:");
 
@@ -120,6 +128,7 @@ public class App {
                     break;
 
                 case 6:
+                    result = "";
                     List<AccountModel> model = new ArrayList<AccountModel>();
 
                     model = bankService.getAllAccountInfo();
